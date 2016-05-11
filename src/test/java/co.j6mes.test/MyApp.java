@@ -1,12 +1,10 @@
 package co.j6mes.test;
 
-import co.j6mes.infra.srf.Topic;
 import co.j6mes.infra.srf.registration.ServiceRegistry;
 import co.j6mes.infra.srf.registration.SimpleServiceRegistry;
-import co.j6mes.infra.srf.registration.message.Register;
-import co.j6mes.infra.srf.registration.message.Service;
-import co.j6mes.infra.srf.registration.message.ServiceDescription;
-import co.j6mes.infra.srf.registration.message.URIServiceDescription;
+import co.j6mes.infra.srf.registration.registrationmessage.Register;
+import co.j6mes.infra.srf.registration.registrationmessage.Service;
+import co.j6mes.infra.srf.registration.registrationmessage.URIServiceDescription;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -15,7 +13,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 /**
  * Created by james on 11/05/2016.
@@ -38,7 +35,7 @@ public class MyApp {
         sd.Path = "/api";
         sd.Port = 5000;
 
-        co.j6mes.infra.srf.registration.message.Topic t = new co.j6mes.infra.srf.registration.message.Topic();
+        co.j6mes.infra.srf.registration.registrationmessage.Topic t = new co.j6mes.infra.srf.registration.registrationmessage.Topic();
         t.Name = "API";
         t.ServiceDescription = sd;
 
@@ -93,7 +90,7 @@ public class MyApp {
             //We have a response
             System.out.println(">>> Broadcast response from server: " + receivePacket.getAddress().getHostAddress());
 
-            //Check if the message is correct
+            //Check if the registrationmessage is correct
             String message = new String(receivePacket.getData()).trim();
             if (message.equals("DISCOVER_FUIFSERVER_RESPONSE")) {
                 //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your contro

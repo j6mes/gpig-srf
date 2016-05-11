@@ -1,10 +1,9 @@
-package co.j6mes.infra.srf.registration.message;
+package co.j6mes.infra.srf.registration.registrationmessage;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Topic")

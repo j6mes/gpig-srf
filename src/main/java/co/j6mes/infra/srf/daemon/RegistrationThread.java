@@ -1,10 +1,10 @@
 package co.j6mes.infra.srf.daemon;
 
-import co.j6mes.infra.srf.registration.Registration;
-import co.j6mes.infra.srf.registration.message.Register;
+import co.j6mes.infra.srf.registration.registrationmessage.Register;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.*;
@@ -59,7 +59,7 @@ public class RegistrationThread implements Runnable {
                 try {
                     r = MessageParser.getInstance().parse(message);
                 } catch (JAXBException e) {
-                    log.warn("Invalid message. Got JAXBException");
+                    log.warn("Invalid registrationmessage. Got JAXBException");
                     log.warn(e);
                 }
 
@@ -67,16 +67,23 @@ public class RegistrationThread implements Runnable {
                 if(r != null) {
                     log.info("Register " + r.Service.get(0).Name);
 
-                }
+                    String msg = "";
+                    try {
+                         msg = MessageParser.getInstance().success();
+                    } catch (JAXBException e) {
+                        log.error("Could not marshal response message");
+                        log.error(e);
+                    }
 
-                if (message.equals("DISCOVER_FUIFSERVER_REQUEST")) {
-                    byte[] sendData = "DISCOVER_FUIFSERVER_RESPONSE".getBytes();
 
-                    //Send a response
-                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
-                    socket.send(sendPacket);
+                    if(msg.trim().length()>0) {
+                        byte[] sendData = msg.getBytes();
 
-                    System.out.println(getClass().getName() + ">>>Sent packet to: " + sendPacket.getAddress().getHostAddress());
+                        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
+                        socket.send(sendPacket);
+                        log.debug(sendPacket.getAddress().getHostAddress());
+                        log.debug(msg);
+                    }
                 }
 
             }

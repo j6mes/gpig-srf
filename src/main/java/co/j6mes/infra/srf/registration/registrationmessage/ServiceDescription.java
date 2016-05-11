@@ -1,4 +1,4 @@
-package co.j6mes.infra.srf.registration.message;
+package co.j6mes.infra.srf.registration.registrationmessage;
 
 import javax.xml.bind.annotation.*;
 
