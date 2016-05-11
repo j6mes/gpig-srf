@@ -13,4 +13,6 @@ public class ServiceDescription {
     @XmlElement(name="ServicePort")
     public Integer Port;
 
+    @XmlElement(name="Schema")
+    public String Schema;
 }

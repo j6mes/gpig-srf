@@ -1,8 +1,6 @@
 package co.j6mes.infra.srf.daemon;
 
 import co.j6mes.infra.srf.registration.registrationmessage.Register;
-import co.j6mes.infra.srf.registration.registrationmessage.Service;
-import co.j6mes.infra.srf.registration.registrationmessage.URIServiceDescription;
 import co.j6mes.infra.srf.registration.statusmessage.SuccessMessage;
 
 import javax.xml.bind.JAXBContext;

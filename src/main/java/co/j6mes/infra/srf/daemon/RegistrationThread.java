@@ -55,14 +55,14 @@ public final class RegistrationThread implements Runnable {
                 DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
                 socket.receive(packet);
 
-                log.debug("Packet Received");
-                log.debug("Source address: "+ packet.getAddress().getHostAddress());
-                log.debug("Data:" + new String(packet.getData()).trim());
+                log.trace("Packet Received");
+                log.trace("Data:" + new String(packet.getData()).trim());
 
                 String message = new String(packet.getData()).trim();
 
                 Register r = null;
                 try {
+                    log.debug("Service registration received from: "+ packet.getAddress().getHostAddress());
                     r = MessageParser.getInstance().parse(message);
                 } catch (JAXBException e) {
                     log.warn("Invalid registrationmessage. Got JAXBException");
@@ -98,7 +98,7 @@ public final class RegistrationThread implements Runnable {
                         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
                         socket.send(sendPacket);
                         log.debug("Sending ack message to : "+sendPacket.getAddress().getHostAddress());
-                        log.debug(msg);
+                        log.trace(msg);
                     }
                 }
 
