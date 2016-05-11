@@ -1,6 +1,10 @@
 package co.j6mes.infra.srf.daemon;
 
+import co.j6mes.infra.srf.database.ServiceDatabaseInstance;
+import co.j6mes.infra.srf.database.ServiceRegistration;
 import co.j6mes.infra.srf.registration.registrationmessage.Register;
+import co.j6mes.infra.srf.registration.registrationmessage.Service;
+import co.j6mes.infra.srf.registration.registrationmessage.Topic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +21,8 @@ public class RegistrationThread implements Runnable {
     private static RegistrationThread instance;
 
     private static Logger log = LogManager.getLogger(RegistrationThread.class);
+
+    private ServiceRegistration database = new ServiceDatabaseInstance();
 
     private RegistrationThread() {
 
@@ -65,7 +71,17 @@ public class RegistrationThread implements Runnable {
 
 
                 if(r != null) {
-                    log.info("Register " + r.Service.get(0).Name);
+
+                    for(Service s : r.Service) {
+                        for(Topic t : s.Topic) {
+                            log.info("Register " + s.Name + "/" + t.Name);
+                            database.register(s.Name,t.Name, co.j6mes.infra.srf.database.Service.from(packet.getAddress(),t.ServiceDescription));
+                        }
+
+                    }
+
+
+
 
                     String msg = "";
                     try {
@@ -81,7 +97,7 @@ public class RegistrationThread implements Runnable {
 
                         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
                         socket.send(sendPacket);
-                        log.debug(sendPacket.getAddress().getHostAddress());
+                        log.debug("Sending ack message to : "+sendPacket.getAddress().getHostAddress());
                         log.debug(msg);
                     }
                 }

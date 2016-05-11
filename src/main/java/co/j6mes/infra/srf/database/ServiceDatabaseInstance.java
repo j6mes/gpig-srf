@@ -20,24 +20,24 @@ public class ServiceDatabaseInstance implements ServiceRegistration {
 
 
     @Override
-    public void register(String serviceName, String topicName, Service registration) {
+    public synchronized void register(String serviceName, String topicName, Service registration) {
         String shortname = serviceName + "/" + topicName;
         services.put(shortname,registration);
 
     }
 
     @Override
-    public Service query(String serviceName, String topicName) {
+    public synchronized Service query(String serviceName, String topicName) {
         return services.get(serviceName);
     }
 
     @Override
-    public Set<String> list() {
+    public synchronized Set<String> list() {
         return services.keySet();
     }
 
     @Override
-    public void deregister(String serviceName, String topicName) {
+    public synchronized void deregister(String serviceName, String topicName) {
         services.remove(serviceName+"/"+topicName);
     }
 
