@@ -10,6 +10,16 @@ public class SimpleServiceRegistry implements ServiceRegistry {
 
 
     @Override
+    public Registration init(String service) {
+        return null;
+    }
+
+    @Override
+    public Registration register(String topicName) {
+        return null;
+    }
+
+    @Override
     public Registration register(String topicName, int i) {
 
 
