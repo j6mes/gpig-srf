@@ -45,7 +45,7 @@ public class ServiceDatabaseInstance implements ServiceRegistration {
     }
 
     @Override
-    public Service query(String service) {
+    public synchronized Service query(String service) {
         return services.get(service);
     }
 
@@ -60,7 +60,7 @@ public class ServiceDatabaseInstance implements ServiceRegistration {
     }
 
     @Override
-    public void deregister(String service) {
+    public synchronized void deregister(String service) {
         services.remove(service);
     }
 

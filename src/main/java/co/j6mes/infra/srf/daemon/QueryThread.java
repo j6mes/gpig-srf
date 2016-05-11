@@ -2,15 +2,12 @@ package co.j6mes.infra.srf.daemon;
 
 import co.j6mes.infra.srf.database.ServiceDatabaseInstance;
 import co.j6mes.infra.srf.database.ServiceRegistration;
-import co.j6mes.infra.srf.query.Query;
-import co.j6mes.infra.srf.query.QueryParser;
 import co.j6mes.infra.srf.registration.registrationmessage.Register;
 import co.j6mes.infra.srf.registration.registrationmessage.Service;
 import co.j6mes.infra.srf.registration.registrationmessage.Topic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.*;
@@ -18,21 +15,21 @@ import java.net.*;
 /**
  * Created by james on 11/05/2016.
  */
-public final class RegistrationThread implements Runnable {
+public final class QueryThread implements Runnable {
 
-    private static RegistrationThread instance;
+    private static QueryThread instance;
 
-    private static Logger log = LogManager.getLogger(RegistrationThread.class);
+    private static Logger log = LogManager.getLogger(QueryThread.class);
 
     private ServiceRegistration database = ServiceDatabaseInstance.getInstance();
 
-    private RegistrationThread() {
+    private QueryThread() {
 
     }
 
-    public static synchronized RegistrationThread getInstance() {
+    public static synchronized QueryThread getInstance() {
         if (instance == null) {
-            instance = new RegistrationThread();
+            instance = new QueryThread();
         }
         return instance;
     }
@@ -64,11 +61,11 @@ public final class RegistrationThread implements Runnable {
 
                 Register r = null;
                 try {
-                    r = MessageParser.getInstance().parse(message);
                     log.debug("Service registration received from: "+ packet.getAddress().getHostAddress());
+                    r = MessageParser.getInstance().parse(message);
                 } catch (JAXBException e) {
-                    //log.warn("Invalid registrationmessage. Got JAXBException");
-                    //log.warn(e);
+                    log.warn("Invalid registrationmessage. Got JAXBException");
+                    log.warn(e);
                 }
 
 
@@ -81,6 +78,8 @@ public final class RegistrationThread implements Runnable {
                         }
 
                     }
+
+
 
 
                     String msg = "";
@@ -100,45 +99,6 @@ public final class RegistrationThread implements Runnable {
                         log.debug("Sending ack message to : "+sendPacket.getAddress().getHostAddress());
                         log.trace(msg);
                     }
-                    continue;
-                }
-
-
-                Query q = null;
-                try {
-                    q = QueryParser.getInstance().parse(message);
-                    log.debug("Service query received from: "+ packet.getAddress().getHostAddress());
-                } catch (JAXBException e) {
-                    //log.warn("Invalid registrationmessage. Got JAXBException");
-                    //log.warn(e);
-                }
-
-                if(q != null) {
-                    log.info("Received Service Query for "+ q.Service +"/" + q.Topic);
-                    co.j6mes.infra.srf.database.Service reg = database.query(q.Service,q.Topic);
-
-                    if(reg == null) {
-                        log.warn("Not found");
-                        continue;
-                    }
-
-                    String msg = "";
-                    try {
-                        msg = QueryParser.getInstance().response(reg);
-                    } catch (JAXBException e) {
-                        log.error("Could not marshal response message");
-                        log.error(e);
-                    }
-
-                    if(msg.trim().length()>0) {
-                        byte[] sendData = msg.getBytes();
-
-                        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
-                        socket.send(sendPacket);
-                        log.debug("Sending response message to : "+sendPacket.getAddress().getHostAddress());
-                        log.trace(msg);
-                    }
-
                 }
 
             }
