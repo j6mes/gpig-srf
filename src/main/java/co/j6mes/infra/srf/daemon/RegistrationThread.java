@@ -16,13 +16,13 @@ import java.net.*;
 /**
  * Created by james on 11/05/2016.
  */
-public class RegistrationThread implements Runnable {
+public final class RegistrationThread implements Runnable {
 
     private static RegistrationThread instance;
 
     private static Logger log = LogManager.getLogger(RegistrationThread.class);
 
-    private ServiceRegistration database = new ServiceDatabaseInstance();
+    private ServiceRegistration database = ServiceDatabaseInstance.getInstance();
 
     private RegistrationThread() {
 

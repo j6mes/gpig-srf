@@ -14,9 +14,22 @@ import java.util.Set;
 public class ServiceDatabaseInstance implements ServiceRegistration {
 
     private static Logger log = LogManager.getLogger(ServiceDatabaseInstance.class);
+    private static ServiceDatabaseInstance instance;
 
 
     private HashMap<String,Service> services = new HashMap<>();
+
+    private ServiceDatabaseInstance () {
+
+    }
+    public static synchronized ServiceDatabaseInstance getInstance() {
+        
+        if(instance == null) {
+            instance = new ServiceDatabaseInstance();
+        }
+
+        return instance;
+    }
 
 
     @Override
@@ -28,7 +41,12 @@ public class ServiceDatabaseInstance implements ServiceRegistration {
 
     @Override
     public synchronized Service query(String serviceName, String topicName) {
-        return services.get(serviceName);
+        return services.get(serviceName+"/"+topicName);
+    }
+
+    @Override
+    public Service query(String service) {
+        return services.get(service);
     }
 
     @Override
@@ -39,6 +57,11 @@ public class ServiceDatabaseInstance implements ServiceRegistration {
     @Override
     public synchronized void deregister(String serviceName, String topicName) {
         services.remove(serviceName+"/"+topicName);
+    }
+
+    @Override
+    public void deregister(String service) {
+        services.remove(service);
     }
 
 

@@ -7,8 +7,16 @@ import java.io.IOException;
  */
 public class ServiceRegistrationDaemon {
     public static void main(String args[]) throws IOException {
-        Thread t = new Thread(RegistrationThread.getInstance());
-        t.start();
+        {
+            Thread t = new Thread(RegistrationThread.getInstance());
+            t.start();
+        }
+
+        {
+            Thread t = new Thread(TimeoutThread.getInstance());
+            t.start();
+        }
+
 
         System.in.read();
 

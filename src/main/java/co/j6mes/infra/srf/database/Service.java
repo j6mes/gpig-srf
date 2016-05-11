@@ -10,7 +10,7 @@ import java.net.InetAddress;
 public class Service {
     protected Integer port;
     protected String ip;
-
+    protected long date;
 
     public String getIp() {
         return ip;
@@ -29,11 +29,16 @@ public class Service {
         this.port = port;
     }
 
+    public long getRegistrationDate() {
+        return date;
+    }
+
     public static Service from(InetAddress ip, ServiceDescription serviceDescription) {
 
         Service s = new Service();
         s.port = serviceDescription.Port;
         s.ip = ip.getHostAddress();
+        s.date = System.currentTimeMillis();
 
         return s.init(serviceDescription);
     }
