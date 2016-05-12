@@ -119,6 +119,25 @@ public final class RegistrationThread implements Runnable {
 
                     if(reg == null) {
                         log.warn("Not found");
+
+
+                        String msg = "";
+                        try {
+                            msg = QueryParser.getInstance().fail();
+                        } catch (JAXBException e) {
+                            log.error("Could not marshal response message");
+                            log.error(e);
+                        }
+
+                        if(msg.trim().length()>0) {
+                            byte[] sendData = msg.getBytes();
+
+                            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
+                            socket.send(sendPacket);
+                            log.debug("Sending not found message to : "+sendPacket.getAddress().getHostAddress());
+                            log.debug(msg);
+                        }
+
                         continue;
                     }
 

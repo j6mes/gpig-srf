@@ -21,4 +21,5 @@ public class QueryResponse {
     @XmlElement(name="Path")
     public String Path;
 
+    public boolean complete = false;
 }

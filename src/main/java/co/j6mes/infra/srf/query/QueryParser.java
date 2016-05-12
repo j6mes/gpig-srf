@@ -20,10 +20,13 @@ public class QueryParser {
 
     private JAXBContext context;
     private JAXBContext responseContext;
+    private JAXBContext failContext;
+
     private QueryParser() {
         try {
             context = JAXBContext.newInstance(Query.class);
             responseContext = JAXBContext.newInstance(QueryResponse.class);
+            failContext = JAXBContext.newInstance(NotFoundMessage.class);
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -56,5 +59,23 @@ public class QueryParser {
         jaxbMarshaller.marshal(qr, sw);
         return sw.getBuffer().toString();
 
+    }
+
+    public String fail() throws JAXBException {
+        Marshaller jaxbMarshaller = failContext.createMarshaller();
+
+        StringWriter sw = new StringWriter();
+
+        NotFoundMessage s = new NotFoundMessage();
+        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        jaxbMarshaller.marshal(s, sw);
+
+        return sw.getBuffer().toString();
+    }
+
+    public QueryResponse parseResponse(String response) throws JAXBException {
+        Unmarshaller jaxbUnmarshaller = responseContext.createUnmarshaller();
+        return (QueryResponse) jaxbUnmarshaller.unmarshal(new StringReader(response));
     }
 }

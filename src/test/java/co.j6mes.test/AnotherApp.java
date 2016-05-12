@@ -1,5 +1,6 @@
 package co.j6mes.test;
 
+import co.j6mes.infra.srf.query.QueryResponse;
 import co.j6mes.infra.srf.query.ServiceQuery;
 import co.j6mes.infra.srf.query.SimpleServiceQuery;
 import co.j6mes.infra.srf.registration.ServiceRegistry;
@@ -15,9 +16,9 @@ public class AnotherApp {
 
         ServiceQuery sq = new SimpleServiceQuery();
 
-        sq.query("ckan","api");
+        QueryResponse qr = sq.query("ckan","api");
 
-        System.in.read();
+        System.out.println("Found Service " + qr.IP + ":" +qr.Port );
 
 
 

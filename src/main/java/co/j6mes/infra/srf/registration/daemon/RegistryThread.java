@@ -36,11 +36,6 @@ public class RegistryThread implements Runnable {
 
         while(true) {
 
-            try {
-                Thread.sleep(retry);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             if(!sr.isUp() || stop) {
                 break;
@@ -95,7 +90,15 @@ public class RegistryThread implements Runnable {
 
 
             }
+
+            try {
+                Thread.sleep(retry);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
+
 
     }
 

@@ -5,4 +5,5 @@ package co.j6mes.infra.srf.query;
  */
 public interface ServiceQuery {
     QueryResponse query(String ckan, String api);
+    void post(QueryResponse qr);
 }

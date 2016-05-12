@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -51,7 +52,14 @@ public final class TimeoutThread implements Runnable {
 
             Set<String> services = database.list();
 
-            for(String service: services) {
+            Set<String> s2 = new HashSet<>();
+
+            for(String s : services) {
+                s2.add(s);
+            }
+
+
+            for(String service: s2) {
                 co.j6mes.infra.srf.database.Service sr = database.query(service);
                 if(sr != null) {
                     if(sr.getRegistrationDate() < System.currentTimeMillis() - timeOut) {
