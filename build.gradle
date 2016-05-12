@@ -69,10 +69,10 @@ publishing {
                 license.appendNode('distribution', 'repo')
 
                 def developers = root.appendNode('developers')
-                def bmuschko = developers.appendNode('developer')
-                bmuschko.appendNode('id', 'bmuschko')
-                bmuschko.appendNode('name', 'Benjamin Muschko')
-                bmuschko.appendNode('email', 'benjamin.muschko@gmail.com')
+                def j6mes = developers.appendNode('developer')
+                j6mes.appendNode('id', 'j6mes')
+                j6mes.appendNode('name', 'James Thorne')
+                j6mes.appendNode('email', 'james@jthorne.co.uk')
             }
         }
     }
