@@ -60,7 +60,7 @@ public class ServiceQueryThread implements Runnable {
                 byte[] sendData = Comms.serializeQuery(q).getBytes();
 
                 try {
-                    log.debug("Attempting to register service");
+                    log.debug("Looking for service");
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 15000);
                     c.send(sendPacket);
                     log.debug("Packet sent");
