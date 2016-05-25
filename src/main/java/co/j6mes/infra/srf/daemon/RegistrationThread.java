@@ -65,6 +65,7 @@ public final class RegistrationThread implements Runnable {
                 Register r = null;
                 try {
                     r = MessageParser.getInstance().parse(message);
+                    log.debug(message);
                     log.debug("Service registration received from: "+ packet.getAddress().getHostAddress());
                 } catch (JAXBException e) {
                     //log.warn("Invalid registrationmessage. Got JAXBException");
@@ -107,6 +108,7 @@ public final class RegistrationThread implements Runnable {
                 Query q = null;
                 try {
                     q = QueryParser.getInstance().parse(message);
+
                     log.debug("Service query received from: "+ packet.getAddress().getHostAddress());
                 } catch (JAXBException e) {
                     //log.warn("Invalid registrationmessage. Got JAXBException");

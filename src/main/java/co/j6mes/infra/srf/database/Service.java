@@ -1,6 +1,7 @@
 package co.j6mes.infra.srf.database;
 
 import co.j6mes.infra.srf.registration.registrationmessage.ServiceDescription;
+import co.j6mes.infra.srf.registration.registrationmessage.URIServiceDescription;
 
 import java.net.InetAddress;
 
@@ -35,7 +36,18 @@ public class Service {
 
     public static Service from(InetAddress ip, ServiceDescription serviceDescription) {
 
-        Service s = new Service();
+
+        Service s = null;
+
+        if(serviceDescription instanceof URIServiceDescription) {
+            URIService us = new URIService();
+            us.setPath(((URIServiceDescription)serviceDescription).Path);
+            s = us;
+        } else {
+            s = new Service();
+        }
+
+
         s.port = serviceDescription.Port;
         s.ip = ip.getHostAddress();
         s.date = System.currentTimeMillis();

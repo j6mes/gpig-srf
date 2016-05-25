@@ -16,9 +16,15 @@ public class AnotherApp {
 
         ServiceQuery sq = new SimpleServiceQuery();
 
-        QueryResponse qr = sq.query("ckan","api");
+        QueryResponse qr = sq.query("c2","maps");
+
+
 
         System.out.println("Found Service " + qr.IP + ":" +qr.Port );
+
+        if(qr.Path !=null) {
+            System.out.println("Found Service " + qr.IP + ":" +qr.Port + " / " + qr.Path);
+        }
 
 
 

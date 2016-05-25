@@ -1,7 +1,9 @@
 package co.j6mes.infra.srf.query;
 
 import co.j6mes.infra.srf.database.Service;
+import co.j6mes.infra.srf.database.URIService;
 import co.j6mes.infra.srf.registration.registrationmessage.Register;
+import co.j6mes.infra.srf.registration.registrationmessage.URIServiceDescription;
 import co.j6mes.infra.srf.registration.statusmessage.SuccessMessage;
 
 import javax.xml.bind.JAXBContext;
@@ -53,7 +55,9 @@ public class QueryParser {
         qr.IP = reg.getIp();
         qr.Port = reg.getPort();
 
-
+        if(reg instanceof URIService) {
+            qr.Path = ((URIService) reg).getPath();
+        }
 
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         jaxbMarshaller.marshal(qr, sw);
